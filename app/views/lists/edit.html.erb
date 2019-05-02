@@ -1,19 +1,25 @@
 <div class="container" id = "edit-container">
   <div class="row justify-content-around">
     <div class="col-lg-6" id = "left-part">
-      <h1><%= @list.name %></h1>
-
       <%= simple_form_for(@list, method: :patch) do |f| %>
+      <%= f.input :name, label: false, input_html: { id: :list_name_edit }, required: false%>
       <%= f.input :description, placeholder: 'Describe this list' , label_html: { class: 'form' }, label: false %>
       <%= f.input :photo , label: 'Please select a picture for your list:' %>
       <%= f.input :photo_cache, label_html: { class: 'form' }, as: :hidden %>
       <%= f.input :is_public %>
-      <div class = 'text-right'><%= f.submit 'Save list', class: 'btn-info'%></div>
-      <% end %>
+    <% end %>
+
+
       <div id = "add-a-place">
         <h3 class = 'text-left'><%= "Add a new place:"%></h3>
         <%= render 'list_places/form', list: @list, list_place: @list_place %>
       </div>
+
+      <div class = 'text-right'>
+       <button class = 'text-right btn-info' id="save-list-button">Save list</button>
+      </div>
+
+
     </div>
 
     <div class="col-lg-6" id = "right-part">
@@ -27,7 +33,7 @@
 </div>
 
 <%= javascript_pack_tag 'form/autocomplete' %>
-
+<%= javascript_pack_tag 'form/saveForm' %>
 
 
 

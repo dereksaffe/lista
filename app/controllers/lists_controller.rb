@@ -1,5 +1,7 @@
 class ListsController < ApplicationController
   before_action :find_list, only: [:show, :edit, :update, :destroy]
+  skip_before_action :authenticate_user!, only: [:show, :index]
+
   def index
     # @lists = ListPlace.alls
     if params[:query].present?
@@ -9,12 +11,13 @@ class ListsController < ApplicationController
       OR places.address ILIKE :query \
       "
       # @lists = List.where(sql_query, query: "%#{params[:query]}%")
-      @lists = List.joins(:places).where(sql_query, query: "%#{params[:query]}%").to_a
+      @lists = List.joins(:places).where(sql_query, query: "%#{params[:query]}%").where(is_public: true).to_a
       @lists.uniq!
 
       # @lists = policy_scope(List).where(sql_query, query: "%#{params[:query]}%")
     else
-      @lists = List.all
+      # @lists = List.all
+      @lists = List.all.where(is_public: true)
       @upvoted = List.where()
       # @lists = policy_scope(List).order(created_at: :desc)
     end
